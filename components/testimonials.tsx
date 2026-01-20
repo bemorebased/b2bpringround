@@ -118,7 +118,7 @@ function TestimonialCard({ testimonial: t, index: i }: { testimonial: typeof TES
                                     alt={`${t.author} company logo`}
                                     fill
                                     sizes="188px"
-                                    className="object-contain drop-shadow-md"
+                                    className="object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]"
                                     priority
                                 />
                             </div>

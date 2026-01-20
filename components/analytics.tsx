@@ -8,8 +8,8 @@ export function Analytics() {
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX"; // Placeholder
-    const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID || "XXXXXXXXXXXXXXX"; // Placeholder
+    const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-MHG6EBFCKB"; // Updated with user provided ID
+    const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID || ""; // No pixel yet
 
     useEffect(() => {
         if (pathname && window.gtag) {
