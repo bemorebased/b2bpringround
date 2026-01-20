@@ -103,34 +103,36 @@ export function ScarcityTimer() {
         <AnimatePresence>
             {isVisible && (
                 <motion.div
-                    initial={{ y: 100, opacity: 0 }}
+                    initial={{ y: -100, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: 100, opacity: 0 }}
-                    className="fixed bottom-0 left-0 right-0 z-50 bg-slate-900 border-t border-amber-500/30 p-4 shadow-[0_-10px_40px_rgba(0,0,0,0.3)]"
+                    exit={{ y: -100, opacity: 0 }}
+                    className="fixed top-0 left-0 right-0 z-[100] bg-slate-900 border-b border-amber-500/30 p-3 shadow-[0_10px_40px_rgba(0,0,0,0.3)]"
                 >
-                    <div className="container mx-auto max-w-4xl flex items-center justify-between gap-4">
+                    <div className="container mx-auto max-w-6xl flex items-center justify-between gap-4">
                         <div className="flex items-center gap-4 flex-1">
-                            {/* Animated Pulse Icon */}
-                            <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/10 shrink-0">
+                            {/* Animated Pulse Icon - Hidden on mobile, visible on sm+ */}
+                            <div className="hidden sm:flex relative h-9 w-9 items-center justify-center rounded-full bg-amber-500/10 shrink-0">
                                 <div className="absolute inset-0 rounded-full bg-amber-500/20 animate-ping"></div>
-                                <Clock className="h-6 w-6 text-amber-500" />
+                                <Clock className="h-4 w-4 text-amber-500" />
                             </div>
 
-                            <div className="flex flex-col">
-                                <span className="flex items-center gap-2 text-amber-500 font-bold uppercase tracking-wider text-xs">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
+                                <span className="flex items-center gap-1.5 text-amber-500 font-bold uppercase tracking-wider text-[10px] sm:text-xs leading-none mb-1 sm:mb-0">
                                     <AlertCircle className="h-3 w-3" />
                                     Ексклузивна Оферта
                                 </span>
-                                <h3 className="text-white font-bold text-lg leading-tight">
-                                    Вземи оферта в следващите <span className="text-amber-400 font-mono text-xl w-12 inline-block text-center">{formatTime(timeLeft)}</span> мин и получи <span className="text-amber-400 text-xl">5% отстъпка</span>
-                                </h3>
+                                <div className="flex items-center flex-wrap gap-x-2 text-white font-bold text-sm sm:text-base leading-tight">
+                                    <span>Вземи оферта до</span>
+                                    <span className="text-amber-400 font-mono text-base sm:text-lg min-w-[50px] text-center bg-slate-800/50 rounded px-1.5 py-0.5 border border-amber-500/20">{formatTime(timeLeft)}</span>
+                                    <span>мин за <span className="text-amber-400 text-base sm:text-lg whitespace-nowrap">5% отстъпка</span></span>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                             <Button
-                                size="lg"
-                                className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold"
+                                size="sm"
+                                className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold whitespace-nowrap text-xs sm:text-sm h-8 sm:h-9"
                                 onClick={() => {
                                     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
                                 }}
@@ -139,9 +141,9 @@ export function ScarcityTimer() {
                             </Button>
                             <button
                                 onClick={() => setIsVisible(false)}
-                                className="p-2 text-slate-500 hover:text-white transition-colors"
+                                className="p-1.5 text-slate-500 hover:text-white transition-colors hover:bg-slate-800 rounded-full"
                             >
-                                <X className="h-5 w-5" />
+                                <X className="h-4 w-4 sm:h-5 sm:w-5" />
                             </button>
                         </div>
                     </div>
