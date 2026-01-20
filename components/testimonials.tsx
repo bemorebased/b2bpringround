@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Quote } from "lucide-react";
+import { Star } from "lucide-react";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
@@ -108,10 +108,10 @@ function TestimonialCard({ testimonial: t, index: i }: { testimonial: typeof TES
     return (
         <Card className="border-none bg-white shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.15)] transition-all duration-300 hover:scale-[1.03] rounded-2xl h-full flex flex-col">
             <CardContent className="flex flex-col gap-6 p-8 h-full">
-                {/* Large Logo */}
+                {/* Large Logo with Shadow */}
                 <div className="flex h-28 items-center justify-center">
                     {t.companyLogo && (
-                        <div className="relative h-24 w-full max-w-[188px]">
+                        <div className="relative h-24 w-full max-w-[188px] drop-shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
                             <Image
                                 src={t.companyLogo}
                                 alt={`${t.author} company logo`}
@@ -124,9 +124,14 @@ function TestimonialCard({ testimonial: t, index: i }: { testimonial: typeof TES
                     )}
                 </div>
 
-                {/* Quote Section */}
+                {/* Quote Section with Star Rating */}
                 <div className="relative flex-1 flex flex-col justify-center">
-                    <Quote className="h-12 w-12 text-blue-500/20 mb-4" />
+                    {/* 5 Star Rating */}
+                    <div className="flex gap-1 mb-4">
+                        {[...Array(5)].map((_, idx) => (
+                            <Star key={idx} className="h-5 w-5 text-amber-400 fill-amber-400" />
+                        ))}
+                    </div>
                     <p className="text-lg font-medium text-slate-700 leading-relaxed">
                         {t.content}
                     </p>
