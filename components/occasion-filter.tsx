@@ -65,8 +65,20 @@ export function OccasionFilter({ onSelect, selected }: OccasionFilterProps) {
         }
     };
 
+    // Thematic background based on selection
+    const getThemeBg = () => {
+        switch (selected) {
+            case "seasonal": return "bg-gradient-to-br from-red-50 via-white to-rose-50";
+            case "teambuilding": return "bg-gradient-to-br from-emerald-50 via-white to-green-50";
+            case "birthday": return "bg-gradient-to-br from-pink-50 via-white to-purple-50";
+            case "training": return "bg-gradient-to-br from-purple-50 via-white to-indigo-50";
+            case "exhibitions": return "bg-gradient-to-br from-indigo-50 via-white to-blue-50";
+            default: return "bg-white";
+        }
+    };
+
     return (
-        <section id="occasions" className="py-20 bg-white shadow-[inset_0_1px_0_0_rgba(0,0,0,0.05)] transition-colors duration-700">
+        <section id="occasions" className={`py-20 shadow-[inset_0_1px_0_0_rgba(0,0,0,0.05)] transition-all duration-700 ${getThemeBg()}`}>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-12 text-center">
                     <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">

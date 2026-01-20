@@ -46,7 +46,7 @@ const PACKAGES = {
             { quantity: 50, pricePerUnit: 43.00, totalEur: 2150.00, totalBgn: 4205.76 },
             { quantity: 100, pricePerUnit: 37.50, totalEur: 3750.00, totalBgn: 7334.58 },
         ],
-        includes: ["Керамична чаша", "Кожен бележник", "Дървена кутия", "Ключодържател"],
+        includes: ["Керамична чаша", "Кожен бележник", "Комплект за вино", "Ключодържател"],
     },
 };
 
@@ -65,8 +65,20 @@ export function Packages({ selectedOccasion }: PackagesProps) {
     const partyPricing = PACKAGES.partyPack.pricing[partyQuantityIdx];
     const jubileePricing = PACKAGES.jubileeGold.pricing[jubileeQuantityIdx];
 
+    // Thematic background based on selection
+    const getThemeBg = () => {
+        switch (selectedOccasion) {
+            case "seasonal": return "bg-gradient-to-b from-rose-50/50 via-white to-white";
+            case "teambuilding": return "bg-gradient-to-b from-green-50/50 via-white to-white";
+            case "birthday": return "bg-gradient-to-b from-purple-50/50 via-white to-white";
+            case "training": return "bg-gradient-to-b from-indigo-50/50 via-white to-white";
+            case "exhibitions": return "bg-gradient-to-b from-blue-50/50 via-white to-white";
+            default: return "bg-white";
+        }
+    };
+
     return (
-        <section id="packages" className="py-24 bg-white transition-all duration-700">
+        <section id="packages" className={`py-24 transition-all duration-700 ${getThemeBg()}`}>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-16 text-center">
                     <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
@@ -194,10 +206,10 @@ export function Packages({ selectedOccasion }: PackagesProps) {
                         </CardHeader>
 
                         <CardContent className="flex-1 space-y-4">
-                            {/* Includes */}
-                            <div className="flex flex-wrap gap-2">
+                            {/* Includes - 2x2 Grid */}
+                            <div className="grid grid-cols-2 gap-2">
                                 {PACKAGES.jubileeGold.includes.map((item, i) => (
-                                    <span key={i} className="rounded-full bg-amber-500/20 px-3 py-1 text-xs font-medium text-amber-300 border border-amber-500/30">
+                                    <span key={i} className="rounded-full bg-amber-500/20 px-3 py-1 text-xs font-medium text-amber-300 border border-amber-500/30 text-center">
                                         {item}
                                     </span>
                                 ))}
