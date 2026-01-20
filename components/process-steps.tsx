@@ -37,20 +37,34 @@ const STEPS = [
 
 export function ProcessSteps() {
     const [visibleSteps, setVisibleSteps] = useState<number[]>([]);
-    const [replayingStep, setReplayingStep] = useState<number | null>(null);
+    const [isAnimating, setIsAnimating] = useState(false);
     const sectionRef = useRef<HTMLDivElement>(null);
+
+    const playAnimation = () => {
+        if (isAnimating) return; // Prevent overlapping animations
+
+        setIsAnimating(true);
+        setVisibleSteps([]); // Reset all steps
+
+        // Animate steps one by one
+        STEPS.forEach((_, index) => {
+            setTimeout(() => {
+                setVisibleSteps((prev) => [...prev, index]);
+            }, index * 400);
+        });
+
+        // Mark animation as complete after all steps are done
+        setTimeout(() => {
+            setIsAnimating(false);
+        }, STEPS.length * 400 + 700);
+    };
 
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        // Animate steps one by one with slower delay
-                        STEPS.forEach((_, index) => {
-                            setTimeout(() => {
-                                setVisibleSteps((prev) => [...prev, index]);
-                            }, index * 400); // Slowed from 200ms to 400ms
-                        });
+                        playAnimation();
                         observer.disconnect();
                     }
                 });
@@ -65,18 +79,12 @@ export function ProcessSteps() {
         return () => observer.disconnect();
     }, []);
 
-    // Replay animation on hover
-    const handleStepHover = (index: number) => {
-        if (replayingStep === index) return; // Prevent multiple triggers
-
-        setReplayingStep(index);
-        setTimeout(() => {
-            setReplayingStep(null);
-        }, 700); // Match animation duration
-    };
-
     return (
-        <section ref={sectionRef} className="py-20 bg-white">
+        <section
+            ref={sectionRef}
+            className="py-20 bg-white cursor-pointer"
+            onMouseEnter={playAnimation}
+        >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-16 text-center">
                     <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
@@ -91,7 +99,7 @@ export function ProcessSteps() {
                     {/* Animated Connecting Line (Desktop Only) */}
                     <div className="absolute top-12 left-0 hidden w-full -translate-y-1/2 md:block overflow-hidden">
                         <div
-                            className="h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 via-emerald-600 to-amber-600 transition-all duration-2000"
+                            className="h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 via-emerald-600 to-amber-600 transition-all"
                             style={{
                                 width: visibleSteps.length > 0 ? '100%' : '0%',
                                 transitionDuration: '2s',
@@ -101,20 +109,17 @@ export function ProcessSteps() {
 
                     {STEPS.map((step, index) => {
                         const isVisible = visibleSteps.includes(index);
-                        const isReplaying = replayingStep === index;
-                        const shouldAnimate = isVisible && !isReplaying;
 
                         return (
                             <div
                                 key={index}
-                                onMouseEnter={() => handleStepHover(index)}
-                                className={`relative flex flex-col items-center text-center transition-all duration-700 cursor-pointer ${shouldAnimate
+                                className={`relative flex flex-col items-center text-center transition-all duration-700 ${isVisible
                                         ? 'opacity-100 translate-y-0'
                                         : 'opacity-0 translate-y-8'
                                     }`}
                             >
                                 {/* Animated Icon Circle */}
-                                <div className={`z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full border-4 border-white ${step.color} text-white shadow-lg transition-all duration-500 ${shouldAnimate
+                                <div className={`z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full border-4 border-white ${step.color} text-white shadow-lg transition-all duration-500 ${isVisible
                                         ? 'scale-100 rotate-0'
                                         : 'scale-0 rotate-180'
                                     }`}>
