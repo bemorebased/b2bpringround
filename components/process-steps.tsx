@@ -44,11 +44,11 @@ export function ProcessSteps() {
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        // Animate steps one by one with delay
+                        // Animate steps one by one with slower delay
                         STEPS.forEach((_, index) => {
                             setTimeout(() => {
                                 setVisibleSteps((prev) => [...prev, index]);
-                            }, index * 200);
+                            }, index * 400); // Slowed from 200ms to 400ms
                         });
                         observer.disconnect();
                     }
@@ -63,6 +63,14 @@ export function ProcessSteps() {
 
         return () => observer.disconnect();
     }, []);
+
+    // Replay animation on hover
+    const handleStepHover = (index: number) => {
+        setVisibleSteps((prev) => prev.filter(i => i !== index));
+        setTimeout(() => {
+            setVisibleSteps((prev) => [...prev, index]);
+        }, 50);
+    };
 
     return (
         <section ref={sectionRef} className="py-20 bg-white">
@@ -93,15 +101,16 @@ export function ProcessSteps() {
                         return (
                             <div
                                 key={index}
-                                className={`relative flex flex-col items-center text-center transition-all duration-700 ${isVisible
-                                        ? 'opacity-100 translate-y-0'
-                                        : 'opacity-0 translate-y-8'
+                                onMouseEnter={() => handleStepHover(index)}
+                                className={`relative flex flex-col items-center text-center transition-all duration-700 cursor-pointer ${isVisible
+                                    ? 'opacity-100 translate-y-0'
+                                    : 'opacity-0 translate-y-8'
                                     }`}
                             >
                                 {/* Animated Icon Circle */}
                                 <div className={`z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full border-4 border-white ${step.color} text-white shadow-lg transition-all duration-500 ${isVisible
-                                        ? 'scale-100 rotate-0'
-                                        : 'scale-0 rotate-180'
+                                    ? 'scale-100 rotate-0'
+                                    : 'scale-0 rotate-180'
                                     }`}>
                                     <step.icon className="h-8 w-8" />
                                 </div>

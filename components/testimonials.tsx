@@ -108,18 +108,20 @@ function TestimonialCard({ testimonial: t, index: i }: { testimonial: typeof TES
     return (
         <Card className="border-none bg-white shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.15)] transition-all duration-300 hover:scale-[1.03] rounded-2xl h-full flex flex-col">
             <CardContent className="flex flex-col gap-6 p-8 h-full">
-                {/* Large Logo with Shadow */}
+                {/* Large Logo with Background Card */}
                 <div className="flex h-28 items-center justify-center">
                     {t.companyLogo && (
-                        <div className="relative h-24 w-full max-w-[188px] drop-shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
-                            <Image
-                                src={t.companyLogo}
-                                alt={`${t.author} company logo`}
-                                fill
-                                sizes="188px"
-                                className="object-contain"
-                                priority
-                            />
+                        <div className="relative h-24 w-full max-w-[188px] bg-white/80 backdrop-blur-sm rounded-lg p-4 shadow-md">
+                            <div className="relative w-full h-full">
+                                <Image
+                                    src={t.companyLogo}
+                                    alt={`${t.author} company logo`}
+                                    fill
+                                    sizes="188px"
+                                    className="object-contain"
+                                    priority
+                                />
+                            </div>
                         </div>
                     )}
                 </div>
