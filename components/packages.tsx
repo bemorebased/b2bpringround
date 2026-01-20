@@ -91,7 +91,7 @@ export function Packages({ selectedOccasion }: PackagesProps) {
 
                 <div className="grid gap-8 lg:gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                     {/* PARTY PACK */}
-                    <Card className="group relative flex flex-col overflow-hidden border-2 border-slate-200 bg-white transition-all duration-500 hover:border-emerald-400 hover:shadow-2xl hover:-translate-y-2">
+                    <Card className="shiny-card group relative flex flex-col overflow-hidden border-2 border-slate-200 bg-white transition-all duration-500 hover:border-emerald-400 hover:shadow-2xl hover:-translate-y-2">
                         <div className="absolute top-4 left-4 z-10">
                             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-white shadow-lg">
                                 <PartyPopper className="h-3.5 w-3.5" />
@@ -176,9 +176,9 @@ export function Packages({ selectedOccasion }: PackagesProps) {
                     </Card>
 
                     {/* JUBILEE GOLD - Premium Styling */}
-                    <Card className="group relative flex flex-col overflow-hidden border-2 border-amber-400/50 bg-gradient-to-b from-slate-900 to-slate-800 transition-all duration-500 hover:border-amber-400 hover:shadow-2xl hover:shadow-amber-500/20 hover:-translate-y-2 lg:scale-105 z-10">
+                    <Card className="shiny-card shiny-card-gold group relative flex flex-col overflow-hidden border-2 border-amber-400/50 bg-gradient-to-b from-slate-900 to-slate-800 transition-all duration-500 hover:border-amber-400 hover:shadow-2xl hover:shadow-amber-500/20 hover:-translate-y-2 lg:scale-105 z-10">
                         <div className="absolute top-4 left-4 z-10">
-                            <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-3 py-1 text-xs font-bold text-slate-900 shadow-lg">
+                            <span className="premium-badge-glow inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-3 py-1 text-xs font-bold text-slate-900 shadow-lg">
                                 <Trophy className="h-3.5 w-3.5" />
                                 PREMIUM
                             </span>
@@ -263,7 +263,7 @@ export function Packages({ selectedOccasion }: PackagesProps) {
                     </Card>
 
                     {/* CUSTOM PACKAGE */}
-                    <Card className="flex flex-col border-2 border-dashed border-slate-300 bg-gradient-to-br from-white to-blue-50/30 transition-all hover:border-blue-400 hover:shadow-xl hover:-translate-y-1">
+                    <Card className="shiny-card flex flex-col border-2 border-dashed border-slate-300 bg-gradient-to-br from-white to-blue-50/30 transition-all hover:border-blue-400 hover:shadow-xl hover:-translate-y-1">
                         <CardHeader className="text-center pb-4">
                             <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg">
                                 <Sparkles className="h-10 w-10 text-white" />
