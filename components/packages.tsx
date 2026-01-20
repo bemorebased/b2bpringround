@@ -198,7 +198,7 @@ export function Packages({ selectedOccasion }: PackagesProps) {
                             </div>
                         </div>
 
-                        <CardHeader className="pb-2">
+                        <CardHeader className="pt-4 pb-2">
                             <CardTitle className="text-2xl font-black text-white">{PACKAGES.jubileeGold.name}</CardTitle>
                             <CardDescription className="text-base text-amber-200/80">
                                 {PACKAGES.jubileeGold.tagline}
