@@ -37,6 +37,7 @@ const STEPS = [
 
 export function ProcessSteps() {
     const [visibleSteps, setVisibleSteps] = useState<number[]>([]);
+    const [replayingStep, setReplayingStep] = useState<number | null>(null);
     const sectionRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -66,10 +67,12 @@ export function ProcessSteps() {
 
     // Replay animation on hover
     const handleStepHover = (index: number) => {
-        setVisibleSteps((prev) => prev.filter(i => i !== index));
+        if (replayingStep === index) return; // Prevent multiple triggers
+
+        setReplayingStep(index);
         setTimeout(() => {
-            setVisibleSteps((prev) => [...prev, index]);
-        }, 50);
+            setReplayingStep(null);
+        }, 700); // Match animation duration
     };
 
     return (
@@ -98,19 +101,22 @@ export function ProcessSteps() {
 
                     {STEPS.map((step, index) => {
                         const isVisible = visibleSteps.includes(index);
+                        const isReplaying = replayingStep === index;
+                        const shouldAnimate = isVisible && !isReplaying;
+
                         return (
                             <div
                                 key={index}
                                 onMouseEnter={() => handleStepHover(index)}
-                                className={`relative flex flex-col items-center text-center transition-all duration-700 cursor-pointer ${isVisible
-                                    ? 'opacity-100 translate-y-0'
-                                    : 'opacity-0 translate-y-8'
+                                className={`relative flex flex-col items-center text-center transition-all duration-700 cursor-pointer ${shouldAnimate
+                                        ? 'opacity-100 translate-y-0'
+                                        : 'opacity-0 translate-y-8'
                                     }`}
                             >
                                 {/* Animated Icon Circle */}
-                                <div className={`z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full border-4 border-white ${step.color} text-white shadow-lg transition-all duration-500 ${isVisible
-                                    ? 'scale-100 rotate-0'
-                                    : 'scale-0 rotate-180'
+                                <div className={`z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full border-4 border-white ${step.color} text-white shadow-lg transition-all duration-500 ${shouldAnimate
+                                        ? 'scale-100 rotate-0'
+                                        : 'scale-0 rotate-180'
                                     }`}>
                                     <step.icon className="h-8 w-8" />
                                 </div>
@@ -118,11 +124,6 @@ export function ProcessSteps() {
                                 {/* Step Content */}
                                 <h3 className="mb-2 text-xl font-bold text-slate-900">{step.title}</h3>
                                 <p className="max-w-xs text-sm text-slate-600">{step.description}</p>
-
-                                {/* Pulse Ring on Hover */}
-                                <div className="absolute top-0 left-1/2 -translate-x-1/2 h-16 w-16 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <div className={`absolute inset-0 rounded-full ${step.color} opacity-20 animate-ping`}></div>
-                                </div>
                             </div>
                         );
                     })}
