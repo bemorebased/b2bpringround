@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google"; // Switched to Inter as per design guidelines
+import { Suspense } from "react";
 import "./globals.css";
 import { Analytics } from "@/components/analytics";
 import { ScarcityTimer } from "@/components/scarcity-timer";
@@ -37,8 +38,10 @@ export default function RootLayout({
       <body
         className={`${inter.variable} font-sans antialiased text-slate-900 bg-white dark:bg-slate-950 dark:text-slate-50`}
       >
-        <Analytics />
-        <ScarcityTimer />
+        <Suspense fallback={null}>
+          <Analytics />
+          <ScarcityTimer />
+        </Suspense>
         {children}
       </body>
     </html>
