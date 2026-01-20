@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
     Briefcase,
     Cake,
@@ -8,48 +7,60 @@ import {
     Gift,
     GraduationCap
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 export type OccasionType = "exhibitions" | "birthday" | "teambuilding" | "seasonal" | "training";
 
-const occasions: { id: OccasionType; title: string; icon: any; color: string; bgColor: string }[] = [
-    {
-        id: "exhibitions",
-        title: "Изложения и панаири",
-        icon: Briefcase,
-        color: "text-blue-600",
-        bgColor: "bg-blue-50",
-    },
-    {
-        id: "birthday",
-        title: "Рожден ден на фирмата",
-        icon: Cake,
-        color: "text-pink-600",
-        bgColor: "bg-pink-50",
-    },
-    {
-        id: "teambuilding",
-        title: "Тийм билдинг и събития",
-        icon: Users,
-        color: "text-green-600",
-        bgColor: "bg-green-50",
-    },
-    {
-        id: "seasonal",
-        title: "Сезонни подаръци",
-        icon: Gift,
-        color: "text-red-600",
-        bgColor: "bg-red-50",
-    },
-    {
-        id: "training",
-        title: "Обучения и нов семестър",
-        icon: GraduationCap,
-        color: "text-purple-600",
-        bgColor: "bg-purple-50",
-    },
-];
+// Enhanced occasion data with stronger theme colors
+const occasions: {
+    id: OccasionType;
+    title: string;
+    icon: any;
+    activeColor: string;
+    activeBg: string;
+    hoverBg: string;
+}[] = [
+        {
+            id: "exhibitions",
+            title: "Изложения и панаири",
+            icon: Briefcase,
+            activeColor: "text-blue-600",
+            activeBg: "bg-blue-600",
+            hoverBg: "hover:bg-blue-50",
+        },
+        {
+            id: "birthday",
+            title: "Рожден ден на фирмата",
+            icon: Cake,
+            activeColor: "text-pink-600",
+            activeBg: "bg-pink-600",
+            hoverBg: "hover:bg-pink-50",
+        },
+        {
+            id: "teambuilding",
+            title: "Тийм билдинг и събития",
+            icon: Users,
+            activeColor: "text-emerald-600",
+            activeBg: "bg-emerald-600",
+            hoverBg: "hover:bg-emerald-50",
+        },
+        {
+            id: "seasonal",
+            title: "Сезонни подаръци",
+            icon: Gift,
+            activeColor: "text-red-600",
+            activeBg: "bg-red-600",
+            hoverBg: "hover:bg-red-50",
+        },
+        {
+            id: "training",
+            title: "Обучения и нов семестър",
+            icon: GraduationCap,
+            activeColor: "text-purple-600",
+            activeBg: "bg-purple-600",
+            hoverBg: "hover:bg-purple-50",
+        },
+    ];
 
 interface OccasionFilterProps {
     onSelect: (id: OccasionType) => void;
@@ -65,20 +76,20 @@ export function OccasionFilter({ onSelect, selected }: OccasionFilterProps) {
         }
     };
 
-    // Thematic background based on selection
+    // Strong thematic background based on selection
     const getThemeBg = () => {
         switch (selected) {
-            case "seasonal": return "bg-gradient-to-br from-red-50 via-white to-rose-50";
-            case "teambuilding": return "bg-gradient-to-br from-emerald-50 via-white to-green-50";
-            case "birthday": return "bg-gradient-to-br from-pink-50 via-white to-purple-50";
-            case "training": return "bg-gradient-to-br from-purple-50 via-white to-indigo-50";
-            case "exhibitions": return "bg-gradient-to-br from-indigo-50 via-white to-blue-50";
+            case "seasonal": return "bg-gradient-to-br from-red-100 via-red-50 to-white border-t-4 border-t-red-500";
+            case "teambuilding": return "bg-gradient-to-br from-emerald-100 via-emerald-50 to-white border-t-4 border-t-emerald-500";
+            case "birthday": return "bg-gradient-to-br from-pink-100 via-pink-50 to-white border-t-4 border-t-pink-500";
+            case "training": return "bg-gradient-to-br from-purple-100 via-purple-50 to-white border-t-4 border-t-purple-500";
+            case "exhibitions": return "bg-gradient-to-br from-blue-100 via-blue-50 to-white border-t-4 border-t-blue-500";
             default: return "bg-white";
         }
     };
 
     return (
-        <section id="occasions" className={`py-20 shadow-[inset_0_1px_0_0_rgba(0,0,0,0.05)] transition-all duration-700 ${getThemeBg()}`}>
+        <section id="occasions" className={`py-20 transition-all duration-500 ${getThemeBg()}`}>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-12 text-center">
                     <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
@@ -99,14 +110,14 @@ export function OccasionFilter({ onSelect, selected }: OccasionFilterProps) {
                                 className={cn(
                                     "group relative flex items-center gap-2 rounded-full px-5 py-3 transition-all duration-300 outline-none ring-offset-2 focus:ring-2",
                                     isSelected
-                                        ? "bg-slate-900 text-white shadow-lg scale-105"
-                                        : "bg-white text-slate-600 shadow-sm hover:bg-slate-100 hover:text-slate-900 hover:shadow-md border border-slate-200"
+                                        ? `${occasion.activeBg} text-white shadow-lg scale-105`
+                                        : `bg-white text-slate-600 shadow-sm ${occasion.hoverBg} hover:text-slate-900 hover:shadow-md border border-slate-200`
                                 )}
                             >
                                 <occasion.icon
                                     className={cn(
                                         "h-5 w-5 transition-transform duration-300 group-hover:scale-110",
-                                        isSelected ? "text-amber-400" : "text-slate-400 group-hover:text-slate-600"
+                                        isSelected ? "text-white" : "text-slate-400"
                                     )}
                                 />
                                 <span className={cn(
@@ -115,9 +126,6 @@ export function OccasionFilter({ onSelect, selected }: OccasionFilterProps) {
                                 )}>
                                     {occasion.title}
                                 </span>
-                                {isSelected && (
-                                    <span className="absolute -bottom-2 left-1/2 h-1 w-12 -translate-x-1/2 rounded-full bg-slate-900/0"></span>
-                                )}
                             </button>
                         );
                     })}

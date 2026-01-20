@@ -65,14 +65,14 @@ export function Packages({ selectedOccasion }: PackagesProps) {
     const partyPricing = PACKAGES.partyPack.pricing[partyQuantityIdx];
     const jubileePricing = PACKAGES.jubileeGold.pricing[jubileeQuantityIdx];
 
-    // Thematic background based on selection
+    // Thematic background based on selection - matching occasion filter
     const getThemeBg = () => {
         switch (selectedOccasion) {
-            case "seasonal": return "bg-gradient-to-b from-rose-50/50 via-white to-white";
-            case "teambuilding": return "bg-gradient-to-b from-green-50/50 via-white to-white";
-            case "birthday": return "bg-gradient-to-b from-purple-50/50 via-white to-white";
-            case "training": return "bg-gradient-to-b from-indigo-50/50 via-white to-white";
-            case "exhibitions": return "bg-gradient-to-b from-blue-50/50 via-white to-white";
+            case "seasonal": return "bg-gradient-to-b from-red-50 via-white to-white";
+            case "teambuilding": return "bg-gradient-to-b from-emerald-50 via-white to-white";
+            case "birthday": return "bg-gradient-to-b from-pink-50 via-white to-white";
+            case "training": return "bg-gradient-to-b from-purple-50 via-white to-white";
+            case "exhibitions": return "bg-gradient-to-b from-blue-50 via-white to-white";
             default: return "bg-white";
         }
     };

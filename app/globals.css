@@ -178,7 +178,7 @@
       transparent,
       rgba(255, 255, 255, 0.6),
       transparent);
-  animation: hero-shine-sweep 3s ease-in-out infinite;
+  animation: hero-shine-sweep 4.5s ease-in-out infinite;
 }
 
 @keyframes hero-shine-sweep {
@@ -210,7 +210,7 @@
       rgba(255, 255, 255, 0.3),
       transparent);
   transform: skewX(-25deg);
-  transition: left 0.5s ease-in-out;
+  transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
   z-index: 10;
 }
