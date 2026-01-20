@@ -92,15 +92,8 @@ export function Packages({ selectedOccasion }: PackagesProps) {
                 <div className="grid gap-8 lg:gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                     {/* PARTY PACK */}
                     <Card className="shiny-card group relative flex flex-col overflow-hidden border-2 border-slate-200 bg-white transition-all duration-500 hover:border-emerald-400 hover:shadow-2xl hover:-translate-y-2">
-                        <div className="absolute top-4 left-4 z-10">
-                            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-white shadow-lg">
-                                <PartyPopper className="h-3.5 w-3.5" />
-                                За екипи
-                            </span>
-                        </div>
-
-                        {/* Product Image */}
-                        <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100">
+                        {/* Product Image - 4:3 Aspect Ratio */}
+                        <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100">
                             <Image
                                 src={PACKAGES.partyPack.image}
                                 alt={PACKAGES.partyPack.name}
@@ -109,6 +102,13 @@ export function Packages({ selectedOccasion }: PackagesProps) {
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 priority
                             />
+                            {/* Badge overlaid on image */}
+                            <div className="absolute top-4 left-4 z-10">
+                                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-white shadow-lg">
+                                    <PartyPopper className="h-3.5 w-3.5" />
+                                    За екипи
+                                </span>
+                            </div>
                         </div>
 
                         <CardHeader className="pb-2">
@@ -177,15 +177,8 @@ export function Packages({ selectedOccasion }: PackagesProps) {
 
                     {/* JUBILEE GOLD - Premium Styling */}
                     <Card className="shiny-card shiny-card-gold group relative flex flex-col overflow-hidden border-2 border-amber-400/50 bg-gradient-to-b from-slate-900 to-slate-800 transition-all duration-500 hover:border-amber-400 hover:shadow-2xl hover:shadow-amber-500/20 hover:-translate-y-2 lg:scale-105 z-10">
-                        <div className="absolute top-4 left-4 z-10">
-                            <span className="premium-badge-glow inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-3 py-1 text-xs font-bold text-slate-900 shadow-lg">
-                                <Trophy className="h-3.5 w-3.5" />
-                                PREMIUM
-                            </span>
-                        </div>
-
-                        {/* Product Image */}
-                        <div className="relative aspect-square overflow-hidden">
+                        {/* Product Image - 4:3 Aspect Ratio */}
+                        <div className="relative aspect-[4/3] overflow-hidden">
                             <Image
                                 src={PACKAGES.jubileeGold.image}
                                 alt={PACKAGES.jubileeGold.name}
@@ -196,6 +189,13 @@ export function Packages({ selectedOccasion }: PackagesProps) {
                             />
                             {/* Gold overlay gradient */}
                             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
+                            {/* Badge overlaid on image */}
+                            <div className="absolute top-4 left-4 z-10">
+                                <span className="premium-badge-glow inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-3 py-1 text-xs font-bold text-slate-900 shadow-lg">
+                                    <Trophy className="h-3.5 w-3.5" />
+                                    PREMIUM
+                                </span>
+                            </div>
                         </div>
 
                         <CardHeader className="pb-2">
