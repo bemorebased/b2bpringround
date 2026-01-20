@@ -36,27 +36,42 @@ const STEPS = [
 ];
 
 export function ProcessSteps() {
-    const [visibleSteps, setVisibleSteps] = useState<number[]>([]);
+    const [lineProgress, setLineProgress] = useState(0);
+    const [flashingStep, setFlashingStep] = useState<number | null>(null);
     const [isAnimating, setIsAnimating] = useState(false);
     const sectionRef = useRef<HTMLDivElement>(null);
 
     const playAnimation = () => {
-        if (isAnimating) return; // Prevent overlapping animations
+        if (isAnimating) return;
 
         setIsAnimating(true);
-        setVisibleSteps([]); // Reset all steps
+        setLineProgress(0);
+        setFlashingStep(null);
 
-        // Animate steps one by one
-        STEPS.forEach((_, index) => {
-            setTimeout(() => {
-                setVisibleSteps((prev) => [...prev, index]);
-            }, index * 400);
-        });
+        // Animate line from 0 to 100% over 2 seconds
+        const duration = 2000;
+        const steps = 60;
+        const increment = 100 / steps;
+        let currentProgress = 0;
 
-        // Mark animation as complete after all steps are done
-        setTimeout(() => {
-            setIsAnimating(false);
-        }, STEPS.length * 400 + 700);
+        const interval = setInterval(() => {
+            currentProgress += increment;
+            setLineProgress(currentProgress);
+
+            // Flash each step when line reaches it (at 25%, 50%, 75%, 100%)
+            const stepThresholds = [25, 50, 75, 100];
+            stepThresholds.forEach((threshold, index) => {
+                if (currentProgress >= threshold && currentProgress < threshold + increment * 2) {
+                    setFlashingStep(index);
+                    setTimeout(() => setFlashingStep(null), 300);
+                }
+            });
+
+            if (currentProgress >= 100) {
+                clearInterval(interval);
+                setTimeout(() => setIsAnimating(false), 500);
+            }
+        }, duration / steps);
     };
 
     useEffect(() => {
@@ -99,29 +114,24 @@ export function ProcessSteps() {
                     {/* Animated Connecting Line (Desktop Only) */}
                     <div className="absolute top-12 left-0 hidden w-full -translate-y-1/2 md:block overflow-hidden">
                         <div
-                            className="h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 via-emerald-600 to-amber-600 transition-all"
+                            className="h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 via-emerald-600 to-amber-600 transition-all ease-linear"
                             style={{
-                                width: visibleSteps.length > 0 ? '100%' : '0%',
-                                transitionDuration: '2s',
+                                width: `${lineProgress}%`,
+                                transitionDuration: '0.033s',
                             }}
                         />
                     </div>
 
                     {STEPS.map((step, index) => {
-                        const isVisible = visibleSteps.includes(index);
+                        const isFlashing = flashingStep === index;
 
                         return (
                             <div
                                 key={index}
-                                className={`relative flex flex-col items-center text-center transition-all duration-700 ${isVisible
-                                        ? 'opacity-100 translate-y-0'
-                                        : 'opacity-0 translate-y-8'
-                                    }`}
+                                className="relative flex flex-col items-center text-center"
                             >
-                                {/* Animated Icon Circle */}
-                                <div className={`z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full border-4 border-white ${step.color} text-white shadow-lg transition-all duration-500 ${isVisible
-                                        ? 'scale-100 rotate-0'
-                                        : 'scale-0 rotate-180'
+                                {/* Icon Circle with Flash Effect */}
+                                <div className={`z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full border-4 border-white ${step.color} text-white shadow-lg transition-all duration-300 ${isFlashing ? 'scale-125 shadow-2xl' : 'scale-100'
                                     }`}>
                                     <step.icon className="h-8 w-8" />
                                 </div>
