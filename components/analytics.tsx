@@ -9,7 +9,7 @@ export function Analytics() {
     const searchParams = useSearchParams();
 
     const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-MHG6EBFCKB"; // Updated with user provided ID
-    const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID || ""; // No pixel yet
+    const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID || "981255005573518";
 
     useEffect(() => {
         if (pathname && window.gtag) {
@@ -66,6 +66,15 @@ export function Analytics() {
                     `,
                 }}
             />
+            <noscript>
+                <img
+                    height="1"
+                    width="1"
+                    style={{ display: "none" }}
+                    src={`https://www.facebook.com/tr?id=${FB_PIXEL_ID}&ev=PageView&noscript=1`}
+                    alt=""
+                />
+            </noscript>
         </>
     );
 }
