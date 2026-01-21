@@ -99,7 +99,7 @@ export function B2BPackages({ onSelectPackage }: B2BPackagesProps) {
                 <div className="grid gap-6 lg:gap-8 lg:grid-cols-3 items-start">
 
                     {/* 1. Персонализиран (Left) */}
-                    <Card className="flex flex-col border border-slate-200 shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-2xl overflow-hidden p-0 gap-0 h-full">
+                    <Card className="shiny-card-minimal flex flex-col border border-slate-200 shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-2xl overflow-hidden p-0 gap-0 h-full">
                         <div className="absolute top-0 left-0 w-full h-1 bg-blue-500"></div>
                         <CardHeader className="text-center pt-8 pb-4">
                             <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-100">
@@ -158,7 +158,7 @@ export function B2BPackages({ onSelectPackage }: B2BPackagesProps) {
                     </Card>
 
                     {/* 2. Стандарт (Middle) */}
-                    <Card className="flex flex-col border border-slate-200 shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-2xl overflow-hidden relative p-0 gap-0 h-full">
+                    <Card className="shiny-card-minimal flex flex-col border border-slate-200 shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-2xl overflow-hidden relative p-0 gap-0 h-full">
                         <div className="absolute top-0 left-0 w-full h-1 bg-emerald-500 z-10"></div>
                         <div className="relative aspect-[4/3] bg-slate-100 overflow-hidden group rounded-b-2xl">
                             <Image
@@ -247,7 +247,7 @@ export function B2BPackages({ onSelectPackage }: B2BPackagesProps) {
                     </Card>
 
                     {/* 3. Премиум+ (Right) */}
-                    <Card className="flex flex-col border border-amber-200 shadow-xl hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-300 rounded-2xl overflow-hidden relative p-0 gap-0 h-full">
+                    <Card className="shiny-card-minimal flex flex-col border border-amber-200 shadow-xl hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-300 rounded-2xl overflow-hidden relative p-0 gap-0 h-full">
                         <div className="absolute top-0 left-0 w-full h-1 bg-amber-500 z-10"></div>
                         <div className="relative aspect-[4/3] bg-slate-900 overflow-hidden group rounded-b-2xl">
                             <Image
