@@ -2,33 +2,44 @@
 
 import { useState } from "react";
 import { Navbar } from "@/components/navbar";
-import { Hero } from "@/components/hero";
-import { TrustedBy } from "@/components/trusted-by";
-import { OccasionFilter, OccasionType } from "@/components/occasion-filter";
+import { B2BHero } from "@/components/b2b-hero";
 import { ProcessSteps } from "@/components/process-steps";
-import { Packages } from "@/components/packages";
 import { Testimonials } from "@/components/testimonials";
-import { FAQ } from "@/components/faq";
+import { OccasionFilter } from "@/components/occasion-filter";
+import { B2BPackages } from "@/components/b2b-packages";
+import { VideoSection } from "@/components/video-section";
 import { ContactForm } from "@/components/contact-form";
 import { Footer } from "@/components/footer";
+import { FAQ } from "@/components/faq";
 
-export default function Home() {
-  const [selectedOccasion, setSelectedOccasion] = useState<OccasionType | null>(null);
+export default function B2BPage() {
+    const [selectedOccasion, setSelectedOccasion] = useState<any>(null); // State for filter
+    const [formPrefill, setFormPrefill] = useState<any>(null); // State for contact form prefill
 
-  return (
-    <main className="min-h-screen bg-white">
-      <Navbar />
-      <Hero />
-      <OccasionFilter
-        selected={selectedOccasion}
-        onSelect={setSelectedOccasion}
-      />
-      <Packages selectedOccasion={selectedOccasion} />
-      <ProcessSteps />
-      <Testimonials />
-      <FAQ />
-      <ContactForm />
-      <Footer />
-    </main>
-  );
+    const handlePackageSelect = (data: { packageType: string; quantity: string; productLinks?: string }) => {
+        setFormPrefill(data);
+        // Smooth scroll to contact form
+        const contactSection = document.getElementById('contact');
+        if (contactSection) {
+            contactSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
+    return (
+        <main className="min-h-screen bg-slate-50">
+            <Navbar />
+            <B2BHero />
+            <OccasionFilter
+                selected={null}
+                onSelect={() => { }}
+            />
+            <ProcessSteps />
+            <B2BPackages onSelectPackage={handlePackageSelect} />
+            <Testimonials />
+            <VideoSection />
+            <FAQ />
+            <ContactForm prefillData={formPrefill} />
+            <Footer />
+        </main>
+    );
 }

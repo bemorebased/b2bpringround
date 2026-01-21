@@ -47,9 +47,9 @@ export async function POST(request: NextRequest) {
 
         // Package names mapping
         const packageNames: Record<string, string> = {
-            "party-pack": "PARTY PACK",
-            "jubilee-gold": "JUBILEE GOLD",
-            "custom": "CUSTOM (Персонализиран)",
+            "party-pack": "Стандарт",
+            "jubilee-gold": "Премиум+",
+            "custom": "Персонализиран",
         };
 
         const packageDisplayName = packageNames[packageType] || packageType || "Не е избран";

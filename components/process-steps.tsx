@@ -96,6 +96,7 @@ export function ProcessSteps() {
 
     return (
         <section
+            id="process"
             ref={sectionRef}
             className="py-20 bg-white cursor-pointer"
             onMouseEnter={playAnimation}

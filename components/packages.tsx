@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 const PACKAGES = {
     partyPack: {
         id: "party-pack",
-        name: "PARTY PACK",
+        name: "Стандарт",
         tagline: "Забавен комплект за тиймбилдинг",
         description: "Fun, energetic team-building vibe",
         image: "/package1.webp",
@@ -35,7 +35,7 @@ const PACKAGES = {
     },
     jubileeGold: {
         id: "jubilee-gold",
-        name: "JUBILEE GOLD",
+        name: "Премиум+",
         tagline: "Премиум комплект за признание",
         description: "Premium, appreciative gesture for management/achievements",
         image: "/package2.webp",
@@ -90,7 +90,7 @@ export function Packages({ selectedOccasion }: PackagesProps) {
                 </div>
 
                 <div className="grid gap-8 lg:gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                    {/* PARTY PACK */}
+                    {/* Стандарт */}
                     <Card className="shiny-card group relative flex flex-col overflow-hidden border-0 bg-white transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 rounded-xl shadow-lg p-0 gap-0">
                         {/* Product Image - 4:3 Aspect Ratio */}
                         <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100">
@@ -175,7 +175,7 @@ export function Packages({ selectedOccasion }: PackagesProps) {
                         </CardFooter>
                     </Card>
 
-                    {/* JUBILEE GOLD - Premium Styling */}
+                    {/* Премиум+ - Premium Styling */}
                     <Card className="shiny-card shiny-card-gold group relative flex flex-col overflow-hidden border-0 bg-gradient-to-b from-slate-900 to-slate-800 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:-translate-y-2 lg:scale-105 z-10 rounded-xl shadow-lg shadow-amber-500/10 p-0 gap-0">
                         {/* Product Image - 4:3 Aspect Ratio */}
                         <div className="relative aspect-[4/3] overflow-hidden">
@@ -262,7 +262,7 @@ export function Packages({ selectedOccasion }: PackagesProps) {
                         </CardFooter>
                     </Card>
 
-                    {/* CUSTOM PACKAGE */}
+                    {/* ПерсонализиранAGE */}
                     <Card className="shiny-card flex flex-col border-0 bg-gradient-to-br from-white to-blue-50/30 transition-all hover:shadow-xl hover:-translate-y-1 rounded-xl shadow-lg p-0 gap-0">
                         <CardHeader className="text-center pb-4">
                             <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg">

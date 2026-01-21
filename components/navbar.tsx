@@ -35,8 +35,8 @@ export function Navbar() {
                     {/* Easter Egg Tooltip */}
                     <div
                         className={`absolute left-0 top-full mt-2 w-80 transition-all duration-300 ${showEasterEgg
-                                ? "opacity-100 translate-y-0 pointer-events-auto"
-                                : "opacity-0 -translate-y-2 pointer-events-none"
+                            ? "opacity-100 translate-y-0 pointer-events-auto"
+                            : "opacity-0 -translate-y-2 pointer-events-none"
                             }`}
                     >
                         <div className="relative rounded-xl bg-slate-900 p-4 shadow-2xl border border-slate-700">
@@ -47,7 +47,7 @@ export function Navbar() {
                             <div className="relative">
                                 <div className="flex items-center gap-2 mb-2">
                                     <Sparkles className="h-4 w-4 text-amber-400" />
-                                    <span className="text-xs font-bold text-amber-400 uppercase tracking-wide">8+ години опит</span>
+                                    <span className="text-xs font-bold text-amber-400 uppercase tracking-wide">10+ години опит</span>
                                 </div>
                                 <p className="text-sm text-white font-medium leading-relaxed">
                                     „Мечтайте, създавайте, свързвайте се"
@@ -61,8 +61,8 @@ export function Navbar() {
                 </div>
 
                 <div className="hidden md:flex md:items-center md:gap-6">
-                    <Link href="#occasions" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
-                        Поводи
+                    <Link href="#process" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
+                        Как работим
                     </Link>
                     <Link href="#packages" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
                         Пакети

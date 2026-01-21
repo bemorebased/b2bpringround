@@ -15,7 +15,15 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Upload, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
 
-export function ContactForm() {
+interface ContactFormProps {
+    prefillData?: {
+        packageType?: string;
+        quantity?: string;
+        productLinks?: string;
+    } | null;
+}
+
+export function ContactForm({ prefillData }: ContactFormProps) {
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -32,7 +40,19 @@ export function ContactForm() {
         message: "",
     });
 
-    // Parse URL params for package pre-selection
+    // Update form when prefillData changes
+    useEffect(() => {
+        if (prefillData) {
+            setFormData(prev => ({
+                ...prev,
+                packageType: prefillData.packageType || prev.packageType,
+                quantity: prefillData.quantity || prev.quantity,
+                productLinks: prefillData.productLinks || prev.productLinks
+            }));
+        }
+    }, [prefillData]);
+
+    // Parse URL params for package pre-selection (Fallback)
     useEffect(() => {
         if (typeof window !== "undefined") {
             const hash = window.location.hash;
@@ -87,8 +107,8 @@ export function ContactForm() {
     };
 
     const packageNames: Record<string, string> = {
-        "party-pack": "PARTY PACK (За екипи)",
-        "jubilee-gold": "JUBILEE GOLD (Premium)",
+        "party-pack": "Стандарт (За екипи)",
+        "jubilee-gold": "Премиум+ (Premium)",
         "custom": "CUSTOM (Персонализиран)",
     };
 
@@ -228,8 +248,8 @@ export function ContactForm() {
                                                 <SelectValue placeholder="Моля изберете..." />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="party-pack">PARTY PACK (За екипи)</SelectItem>
-                                                <SelectItem value="jubilee-gold">JUBILEE GOLD (Premium)</SelectItem>
+                                                <SelectItem value="party-pack">Стандарт (За екипи)</SelectItem>
+                                                <SelectItem value="jubilee-gold">Премиум+ (Premium)</SelectItem>
                                                 <SelectItem value="custom">CUSTOM (Персонализиран)</SelectItem>
                                             </SelectContent>
                                         </Select>

@@ -57,8 +57,18 @@ export function Testimonials() {
     }, [emblaApi, onSelect]);
 
     return (
-        <section className="bg-gradient-to-b from-slate-50/50 via-white to-white py-24 border-t border-slate-200/60">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative bg-gradient-to-b from-slate-50/50 via-white to-white py-24 border-t border-slate-200/60 overflow-hidden">
+            {/* Background Image - Blurred */}
+            <div className="absolute inset-0 opacity-10 pointer-events-none">
+                <Image
+                    src="/clients.webp"
+                    alt="Clients background"
+                    fill
+                    className="object-cover blur-[2px]"
+                />
+            </div>
+
+            <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-16 text-center">
                     <h2 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
                         Доверие от лидерите в индустрията

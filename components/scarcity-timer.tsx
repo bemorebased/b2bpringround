@@ -119,7 +119,7 @@ export function ScarcityTimer() {
                             <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
                                 <span className="flex items-center gap-1.5 text-amber-500 font-bold uppercase tracking-wider text-[10px] sm:text-xs leading-none mb-1 sm:mb-0">
                                     <AlertCircle className="h-3 w-3" />
-                                    Ексклузивна Оферта
+                                    ЕКСКЛУЗИВНА ОФЕРТА
                                 </span>
                                 <div className="flex items-center flex-wrap gap-x-2 text-white font-bold text-sm sm:text-base leading-tight">
                                     <span>Вземи оферта до</span>
@@ -137,7 +137,7 @@ export function ScarcityTimer() {
                                     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
                                 }}
                             >
-                                Грабни Офертата
+                                Възползвай се сега
                             </Button>
                             <button
                                 onClick={() => setIsVisible(false)}

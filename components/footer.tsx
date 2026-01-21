@@ -24,7 +24,7 @@ export function Footer() {
                                 <Link href="#" className="hover:text-blue-400 transition-colors">Начало</Link>
                             </li>
                             <li>
-                                <Link href="#occasions" className="hover:text-blue-400 transition-colors">Поводи</Link>
+                                <Link href="#process" className="hover:text-blue-400 transition-colors">Как работим</Link>
                             </li>
                             <li>
                                 <Link href="#packages" className="hover:text-blue-400 transition-colors">Пакети</Link>
