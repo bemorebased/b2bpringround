@@ -64,7 +64,7 @@ export function Footer() {
                                     <MapPin className="h-5 w-5 text-blue-500 shrink-0" />
                                     <span className="leading-relaxed">
                                         Бизнес Парк Флавия,<br />
-                                        ул. "Коматевско шосе",<br />
+                                        бул. Цар Борис ІІІ Обединител",<br />
                                         Пловдив, България
                                     </span>
                                 </li>
