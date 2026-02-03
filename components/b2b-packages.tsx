@@ -127,7 +127,7 @@ export function B2BPackages({ onSelectPackage }: B2BPackagesProps) {
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center max-w-3xl mx-auto mb-16">
                         <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                            Изберете своя пакет сегадфгфддф
+                            Изберете своя пакет сега
 
                         </h2>
                         <p className="mt-4 text-lg text-slate-600">
