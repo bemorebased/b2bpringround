@@ -61,7 +61,10 @@ export function ScarcityTimer() {
 
     // Scroll Direction & Exit Intent Detection
     useEffect(() => {
-        if (timeLeft === 0 || hasTriggered) return;
+        // Check session storage to see if we've already shown the offer this session
+        const isSessionShown = typeof window !== 'undefined' && sessionStorage.getItem("offer_shown_session");
+
+        if (timeLeft === 0 || hasTriggered || isSessionShown) return;
 
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
@@ -70,6 +73,7 @@ export function ScarcityTimer() {
             if (currentScrollY > 300 && currentScrollY < lastScrollY && !isVisible && !hasTriggered) {
                 setIsVisible(true);
                 setHasTriggered(true); // Don't auto-trigger again to avoid annoyance
+                sessionStorage.setItem("offer_shown_session", "true");
             }
 
             setLastScrollY(currentScrollY);
@@ -79,6 +83,7 @@ export function ScarcityTimer() {
             if (e.clientY <= 0 && !isVisible && !hasTriggered) {
                 setIsVisible(true);
                 setHasTriggered(true);
+                sessionStorage.setItem("offer_shown_session", "true");
             }
         };
 

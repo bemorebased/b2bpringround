@@ -9,8 +9,10 @@ import { OccasionFilter } from "@/components/occasion-filter";
 import { B2BPackages } from "@/components/b2b-packages";
 import { VideoSection } from "@/components/video-section";
 import { ContactForm } from "@/components/contact-form";
+import { BrandSlider } from "@/components/brand-slider";
 import { Footer } from "@/components/footer";
 import { FAQ } from "@/components/faq";
+import { ComparisonSection } from "@/components/comparison-section";
 
 export default function B2BPage() {
     const [selectedOccasion, setSelectedOccasion] = useState<any>(null); // State for filter
@@ -34,11 +36,13 @@ export default function B2BPage() {
                 onSelect={() => { }}
             />
             <ProcessSteps />
+            <ComparisonSection />
             <B2BPackages onSelectPackage={handlePackageSelect} />
             <Testimonials />
             <VideoSection />
             <FAQ />
             <ContactForm prefillData={formPrefill} />
+            <BrandSlider />
             <Footer />
         </main>
     );

@@ -13,7 +13,7 @@ import {
     SelectValue
 } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Upload, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
+import { Upload, CheckCircle2, Loader2, AlertCircle, X, FileText, Plus, Link as LinkIcon } from "lucide-react";
 
 interface ContactFormProps {
     prefillData?: {
@@ -23,10 +23,22 @@ interface ContactFormProps {
     } | null;
 }
 
+interface AttachmentData {
+    filename: string;
+    content: string; // base64
+    type: string;
+}
+
+const MAX_PRODUCT_LINKS = 10;
+const DEFAULT_PRODUCT_LINKS = 3;
+const MAX_FILE_SIZE_MB = 4; // Reduced to avoid Vercel body size limits
+
 export function ContactForm({ prefillData }: ContactFormProps) {
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [attachment, setAttachment] = useState<AttachmentData | null>(null);
+    const [productLinks, setProductLinks] = useState<string[]>(Array(DEFAULT_PRODUCT_LINKS).fill(""));
 
     // Form state
     const [formData, setFormData] = useState({
@@ -36,7 +48,6 @@ export function ContactForm({ prefillData }: ContactFormProps) {
         phone: "",
         packageType: "",
         quantity: "",
-        productLinks: "",
         message: "",
     });
 
@@ -47,8 +58,16 @@ export function ContactForm({ prefillData }: ContactFormProps) {
                 ...prev,
                 packageType: prefillData.packageType || prev.packageType,
                 quantity: prefillData.quantity || prev.quantity,
-                productLinks: prefillData.productLinks || prev.productLinks
             }));
+            // Parse prefill product links if provided
+            if (prefillData.productLinks) {
+                const links = prefillData.productLinks.split("\n").filter(l => l.trim());
+                const paddedLinks = [...links];
+                while (paddedLinks.length < DEFAULT_PRODUCT_LINKS) {
+                    paddedLinks.push("");
+                }
+                setProductLinks(paddedLinks.slice(0, MAX_PRODUCT_LINKS));
+            }
         }
     }, [prefillData]);
 
@@ -67,12 +86,114 @@ export function ContactForm({ prefillData }: ContactFormProps) {
                         ...prev,
                         packageType: pkg,
                         quantity: qty || prev.quantity,
-                        productLinks: links ? decodeURIComponent(links) : prev.productLinks,
                     }));
+                }
+                if (links) {
+                    const decodedLinks = decodeURIComponent(links).split("\n").filter(l => l.trim());
+                    const paddedLinks = [...decodedLinks];
+                    while (paddedLinks.length < DEFAULT_PRODUCT_LINKS) {
+                        paddedLinks.push("");
+                    }
+                    setProductLinks(paddedLinks.slice(0, MAX_PRODUCT_LINKS));
                 }
             }
         }
     }, []);
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        // Limit size to avoid Vercel body size limits
+        if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+            setError(`Файлът е твърде голям. Максималният размер е ${MAX_FILE_SIZE_MB}MB.`);
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const content = reader.result as string;
+            setAttachment({
+                filename: file.name,
+                content: content,
+                type: file.type
+            });
+            setError(null);
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const removeAttachment = () => {
+        setAttachment(null);
+        const input = document.getElementById("file-upload") as HTMLInputElement;
+        if (input) input.value = "";
+    };
+
+    const handleProductLinkChange = (index: number, value: string) => {
+        const newLinks = [...productLinks];
+        newLinks[index] = value;
+        setProductLinks(newLinks);
+    };
+
+    const addProductLink = () => {
+        if (productLinks.length < MAX_PRODUCT_LINKS) {
+            setProductLinks([...productLinks, ""]);
+        }
+    };
+
+    const [isDragging, setIsDragging] = useState(false);
+
+    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(true);
+    };
+
+    const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+
+        const file = e.dataTransfer.files?.[0];
+        if (!file) return;
+
+        // Limit size to avoid Vercel body size limits
+        if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+            setError(`Файлът е твърде голям. Максималният размер е ${MAX_FILE_SIZE_MB}MB.`);
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const content = reader.result as string;
+            setAttachment({
+                filename: file.name,
+                content: content,
+                type: file.type
+            });
+            setError(null);
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const removeProductLink = (index: number) => {
+        if (productLinks.length > 1) {
+            const newLinks = productLinks.filter((_, i) => i !== index);
+            setProductLinks(newLinks);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -80,18 +201,40 @@ export function ContactForm({ prefillData }: ContactFormProps) {
         setError(null);
 
         try {
+            // Filter out empty product links and join them
+            const filteredLinks = productLinks.filter(link => link.trim());
+
+            const payload = {
+                ...formData,
+                productLinks: filteredLinks.join("\n"),
+                attachment: attachment
+            };
+
             const response = await fetch("/api/contact", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(payload),
             });
 
-            const data = await response.json();
+            // Handle non-JSON responses (e.g., Vercel body size limit errors)
+            let data;
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                data = await response.json();
+            } else {
+                // Not JSON - likely a server error page
+                const text = await response.text();
+                console.error("Non-JSON response:", text.substring(0, 200));
+                if (text.includes("Request Entity Too Large") || text.includes("body exceeded") || response.status === 413) {
+                    throw new Error("Файлът е твърде голям. Моля, използвайте по-малък файл (до 4MB).");
+                }
+                throw new Error("Сървърна грешка. Моля, опитайте отново без прикачен файл.");
+            }
 
             if (!response.ok || !data.success) {
-                throw new Error(data.error || "Възникна грешка");
+                throw new Error(data.error || "Възникна грешка при изпращането. Моля, опитайте отново.");
             }
 
             setSubmitted(true);
@@ -133,6 +276,8 @@ export function ContactForm({ prefillData }: ContactFormProps) {
                                 className="mt-8 bg-white"
                                 onClick={() => {
                                     setSubmitted(false);
+                                    setAttachment(null);
+                                    setProductLinks(Array(DEFAULT_PRODUCT_LINKS).fill(""));
                                     setFormData({
                                         name: "",
                                         company: "",
@@ -140,7 +285,6 @@ export function ContactForm({ prefillData }: ContactFormProps) {
                                         phone: "",
                                         packageType: "",
                                         quantity: "",
-                                        productLinks: "",
                                         message: "",
                                     });
                                 }}
@@ -160,10 +304,10 @@ export function ContactForm({ prefillData }: ContactFormProps) {
                 <div className="mx-auto max-w-2xl">
                     <div className="mb-10 text-center">
                         <h2 className="text-3xl font-bold tracking-tight text-slate-900">
-                            Получете персонално предложение до 24 часа
+                            Персонална оферта до 24 часа
                         </h2>
                         <p className="mt-4 text-slate-600">
-                            Попълнете формата и прикачете вашето лого за безплатна визуализация
+                            Попълнете формата и прикачете вашето лого
                         </p>
                     </div>
 
@@ -276,38 +420,122 @@ export function ContactForm({ prefillData }: ContactFormProps) {
                                 </div>
 
                                 {formData.packageType === "custom" && (
-                                    <div className="space-y-2">
-                                        <Label htmlFor="productLinks">Линкове към продукти от printground.net</Label>
-                                        <Textarea
-                                            id="productLinks"
-                                            placeholder="Поставете линкове към желаните продукти (по един на ред)&#10;&#10;Пример:&#10;https://printground.net/product/teniski&#10;https://printground.net/product/shapki"
-                                            className="min-h-[100px]"
-                                            value={formData.productLinks}
-                                            onChange={(e) => handleChange("productLinks", e.target.value)}
-                                        />
+                                    <div className="space-y-3">
+                                        <div className="flex items-center justify-between">
+                                            <Label>Линкове към продукти от printground.net</Label>
+                                            <span className="text-xs text-slate-500">{productLinks.filter(l => l.trim()).length}/{MAX_PRODUCT_LINKS}</span>
+                                        </div>
+                                        <div className="space-y-2">
+                                            {productLinks.map((link, index) => (
+                                                <div key={index} className="flex items-center gap-2">
+                                                    <div className="relative flex-1">
+                                                        <LinkIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                                                        <Input
+                                                            placeholder={`https://printground.net/product/...`}
+                                                            value={link}
+                                                            onChange={(e) => handleProductLinkChange(index, e.target.value)}
+                                                            className="pl-9"
+                                                        />
+                                                    </div>
+                                                    {productLinks.length > 1 && (
+                                                        <Button
+                                                            type="button"
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            className="h-9 w-9 shrink-0 text-slate-400 hover:text-red-500"
+                                                            onClick={() => removeProductLink(index)}
+                                                        >
+                                                            <X className="h-4 w-4" />
+                                                        </Button>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                        {productLinks.length < MAX_PRODUCT_LINKS && (
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={addProductLink}
+                                                className="w-full border-dashed"
+                                            >
+                                                <Plus className="mr-2 h-4 w-4" />
+                                                добави още
+                                            </Button>
+                                        )}
                                     </div>
                                 )}
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="logo">Прикачи лого (опционално)</Label>
-                                    <div className="flex w-full items-center justify-center rounded-md border-2 border-dashed border-slate-300 bg-slate-50 px-6 py-6 transition-colors hover:bg-slate-100">
-                                        <div className="space-y-1 text-center">
-                                            <Upload className="mx-auto h-8 w-8 text-slate-400" />
-                                            <div className="flex text-sm text-slate-600">
-                                                <label
-                                                    htmlFor="file-upload"
-                                                    className="relative cursor-pointer rounded-md bg-white font-medium text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 hover:text-blue-500 px-1"
-                                                >
-                                                    <span>Качи файл</span>
-                                                    <input id="file-upload" name="file-upload" type="file" className="sr-only" />
-                                                </label>
-                                                <p className="pl-1">или провлачи тук</p>
+                                    <Label htmlFor="logo">Прикачи лого (опционално, до {MAX_FILE_SIZE_MB}MB)</Label>
+                                    {!attachment ? (
+                                        <div
+                                            onDragOver={handleDragOver}
+                                            onDragEnter={handleDragEnter}
+                                            onDragLeave={handleDragLeave}
+                                            onDrop={handleDrop}
+                                            className={`flex w-full items-center justify-center rounded-md border-2 border-dashed px-6 py-6 transition-all duration-200 ${isDragging
+                                                    ? "border-blue-500 bg-blue-50/50 ring-2 ring-blue-200 ring-offset-2 scale-[1.01]"
+                                                    : "border-slate-300 bg-slate-50 hover:bg-slate-100"
+                                                }`}
+                                        >
+                                            <div className="space-y-1 text-center pointer-events-none">
+                                                <Upload className={`mx-auto h-8 w-8 transition-colors ${isDragging ? "text-blue-500" : "text-slate-400"}`} />
+                                                <div className="flex text-sm text-slate-600 justify-center">
+                                                    <label
+                                                        htmlFor="file-upload"
+                                                        className="relative cursor-pointer rounded-md font-medium text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 hover:text-blue-500 px-1 pointer-events-auto"
+                                                    >
+                                                        <span>Качи файл</span>
+                                                        <input
+                                                            id="file-upload"
+                                                            name="file-upload"
+                                                            type="file"
+                                                            className="sr-only"
+                                                            onChange={handleFileChange}
+                                                            accept=".png,.jpg,.jpeg,.pdf,.ai,.eps,.svg"
+                                                        />
+                                                    </label>
+                                                    <p className="pl-1">или провлачи тук</p>
+                                                </div>
+                                                <p className="text-xs text-slate-500">
+                                                    PNG, JPG, PDF, AI, EPS до {MAX_FILE_SIZE_MB}MB
+                                                </p>
                                             </div>
-                                            <p className="text-xs text-slate-500">
-                                                PNG, PDF, AI, EPS до 10MB
-                                            </p>
                                         </div>
-                                    </div>
+                                    ) : (
+                                        <div className="flex w-full items-center justify-between rounded-md border border-slate-200 bg-slate-50 px-4 py-3">
+                                            <div className="flex items-center gap-3 overflow-hidden">
+                                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                                                    <FileText className="h-5 w-5" />
+                                                </div>
+                                                <div className="flex min-w-0 flex-col">
+                                                    <span className="truncate text-sm font-medium text-slate-700">
+                                                        {attachment.filename}
+                                                    </span>
+                                                    <span className="text-xs text-slate-500">
+                                                        Готов за изпращане
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <Button
+                                                type="button"
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-8 w-8 text-slate-500 hover:text-red-500"
+                                                onClick={removeAttachment}
+                                            >
+                                                <X className="h-4 w-4" />
+                                                <span className="sr-only">Премахни файл</span>
+                                            </Button>
+                                        </div>
+                                    )}
+                                    <p className="text-xs text-slate-500 mt-2">
+                                        Имате лого? Можете да го пратите и на{" "}
+                                        <a href="mailto:sales@printground.net" className="text-blue-600 hover:underline">sales@printground.net</a>
+                                        {" "}или да поръчате{" "}
+                                        <a href="https://printground.net/?porto_builder=order-samples" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">безплатни мостри</a>.
+                                    </p>
                                 </div>
 
                                 <div className="space-y-2">
@@ -348,3 +576,5 @@ export function ContactForm({ prefillData }: ContactFormProps) {
         </section>
     );
 }
+
+

@@ -13,15 +13,15 @@ const CLIENTS = [
 export function TrustedBy() {
     return (
         <section className="relative border-y border-slate-100 bg-white py-12 overflow-hidden">
-            {/* Background Image - Blurred */}
-            <div className="absolute inset-0 opacity-10 pointer-events-none">
+            {/* Background Image - Removed */
+            /* <div className="absolute inset-0 opacity-10 pointer-events-none">
                 <Image
                     src="/clients.webp"
                     alt="Clients background"
                     fill
                     className="object-cover blur-[2px]"
                 />
-            </div>
+            </div> */}
 
             <div className="container relative z-10 mx-auto px-4 text-center">
                 <p className="mb-10 text-sm font-semibold uppercase tracking-wider text-slate-500">
