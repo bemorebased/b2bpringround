@@ -10,7 +10,6 @@ export function B2BHero() {
         <section className="relative overflow-hidden bg-slate-900 py-20 lg:py-28">
             {/* Background Texture/Gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 opacity-90"></div>
-            <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 bg-repeat"></div>
 
             <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid gap-12 lg:grid-cols-2 lg:gap-8 items-center">
@@ -40,8 +39,8 @@ export function B2BHero() {
 
                         <div className="flex flex-col gap-3 text-sm font-medium text-slate-400">
                             <div className="flex items-center gap-2">
-                                <Clock className="h-5 w-5 text-emerald-400" />
-                                <span>Бърза и надеждна доставка</span>
+                                <Users className="h-5 w-5 text-emerald-400" />
+                                <span>1000+ доволни клиента</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <ShieldCheck className="h-5 w-5 text-emerald-400" />
@@ -56,8 +55,8 @@ export function B2BHero() {
                                 <span>Над 10 години опит</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <Users className="h-5 w-5 text-emerald-400" />
-                                <span>1000+ доволни клиента</span>
+                                <Clock className="h-5 w-5 text-emerald-400" />
+                                <span>Бърза и надеждна доставка</span>
                             </div>
                         </div>
                     </div>

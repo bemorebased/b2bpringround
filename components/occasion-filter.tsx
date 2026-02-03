@@ -93,7 +93,7 @@ export function OccasionFilter({ onSelect, selected }: OccasionFilterProps) {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-12 text-center">
                     <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                        Ние имаме решения!
+                        Създаваме имидж, който привлича клиенти вместо вас.
                     </h2>
                     <p className="mt-4 text-lg text-slate-600">
                         Изберете категория, за да видите нашите предложения
