@@ -79,7 +79,12 @@ export function Footer() {
 
                 <div className="mt-16 border-t border-slate-800 pt-8 text-center text-xs text-slate-500">
                     <p>&copy; 2026 Printground. Всички права запазени.</p>
-                    <p className="mt-2">Created by Printground Family</p>
+                    <p className="mt-2">
+                        Дизайн и разработка{" "}
+                        <a href="mailto:info@printground.net" className="hover:text-amber-500 transition-colors">
+                            PrintGroundWeb
+                        </a>
+                    </p>
                 </div>
             </div>
         </footer>
